@@ -10,8 +10,6 @@ FROM node:22-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-# 确保 public 文件夹存在且不为空，避免 COPY 命令报错
-RUN mkdir -p public && touch public/.keep
 ENV NEXT_TELEMETRY_DISABLED=1
 RUN npm run build
 
@@ -25,7 +23,6 @@ ENV PORT=3000
 ENV NEXT_TELEMETRY_DISABLED=1
 
 # 拷贝 Next.js 产物和我们需要的自定义服务器代码
-COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
