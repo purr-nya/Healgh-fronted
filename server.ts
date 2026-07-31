@@ -41,9 +41,10 @@ app.prepare().then(() => {
     handle(req, res, parsedUrl);
   });
 
-  const PORT = process.env.PORT || 3000;
-  httpServer.listen(PORT, () => {
-    console.log(`> Server ready on http://localhost:${PORT}`);
+  const PORT = parseInt(process.env.PORT || '3000', 10);
+  const HOST = process.env.HOST || '0.0.0.0';
+  httpServer.listen(PORT, HOST, () => {
+    console.log(`> Server ready on http://${HOST}:${PORT}`);
   });
 }).catch((err) => {
   console.error('Error starting server:', err);
