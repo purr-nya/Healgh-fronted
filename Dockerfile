@@ -10,7 +10,8 @@ FROM node:22-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-RUN mkdir -p public
+# 确保 public 文件夹存在且不为空，避免 COPY 命令报错
+RUN mkdir -p public && touch public/.keep
 ENV NEXT_TELEMETRY_DISABLED=1
 RUN npm run build
 
